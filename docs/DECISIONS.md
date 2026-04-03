@@ -59,3 +59,27 @@
 **Alternatives considered:** Railway, Fly.io for backend
 
 **Revisit if:** Render free tier performance is unacceptable for demo scenarios.
+
+---
+
+## 2026-04-02 — LiteLLM requires provider-prefixed model string for CrewAI
+
+**Decision:** In crew.py, the model is specified as `anthropic/claude-haiku-4-5-20251001`, not `claude-haiku-4-5-20251001`.
+
+**Reason:** LiteLLM (used by CrewAI internally) requires the provider prefix to route correctly. Without it, LiteLLM raises `LLM Provider NOT provided`. Direct Anthropic SDK calls (intent_detector, debate, steer, summary_generator) are unaffected — they use the bare model name.
+
+**Alternatives considered:** Setting ANTHROPIC_API_KEY as a global env var for LiteLLM auto-detection
+
+**Revisit if:** CrewAI changes its LiteLLM integration in a future version.
+
+---
+
+## 2026-04-03 — Model updated to claude-haiku-4-5-20251001
+
+**Decision:** All API calls use `claude-haiku-4-5-20251001` instead of the originally specified `claude-haiku-20240307`.
+
+**Reason:** The Anthropic account only has access to models from the Claude 3.5/4.x generation. `claude-3-haiku-20240307` and `claude-haiku-20240307` both returned 404. `claude-haiku-4-5-20251001` is the latest Haiku model and works with the account.
+
+**Alternatives considered:** claude-3-5-haiku-20241022 (deprecated, also 404)
+
+**Revisit if:** Never — this is a newer, better model at comparable cost.
