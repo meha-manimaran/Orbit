@@ -15,9 +15,20 @@
 - `steer.py` — user steering via direct Anthropic call, continues debate from conversation history
 - `summary_generator.py` — 4-field JSON summary via direct Anthropic call with markdown fence stripping
 - `main.py` — FastAPI with /simulate, /steer, /health endpoints and Pydantic request models
+- `frontend/src/lib/constants.js` — PERSONA_COLOURS, NAME_TO_ID, CORE_PERSONA_IDS
+- `frontend/src/lib/api.js` — runSimulation and steerConversation API client
+- `frontend/src/App.jsx` — health ping on mount, warming banner, backendReady state
+- `frontend/src/pages/index.jsx` — full state machine: reveal logic, steer flow, reset
+- `frontend/src/components/InputPanel.jsx` — textarea with auto-resize, run button
+- `frontend/src/components/PersonaCards.jsx` — staggered fade-in cards with avatar circles and type badges
+- `frontend/src/components/SimulationFeed.jsx` — scrollable feed with phase headers, typing dots, auto-scroll
+- `frontend/src/components/SteerInput.jsx` — inline input for steering Phase 2
+- `frontend/src/components/SummaryPanel.jsx` — 2x2 summary grid with sentiment colouring, copy button
+- `frontend/postcss.config.js` and `frontend/src/index.css` — Tailwind + animation keyframes
 
 ### Fixed
 - CrewAI LLM model string must use `anthropic/` prefix for LiteLLM routing
-- Model updated from `claude-haiku-20240307` → `claude-haiku-4-5-20251001` (account only has access to newer models)
+- Model updated from `claude-haiku-20240307` → `claude-haiku-4-5-20251001`
+- CSS @import must precede @tailwind directives
 
 ---

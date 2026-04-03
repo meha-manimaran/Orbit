@@ -1,7 +1,7 @@
 # Orbit — Project Status
 
 **Last updated:** 2026-04-03
-**Current phase:** Backend complete — milestone 1 done
+**Current phase:** Frontend complete — ready for integration test
 **Overall status:** In progress
 
 ---
@@ -21,25 +21,29 @@
 | 9 | Summary generator | ✅ Complete |
 | 10 | FastAPI wiring (main.py) | ✅ Complete |
 | 11 | End-to-end /simulate test | ✅ Complete |
-| 12 | Frontend setup | ⬜ Not started |
-| 13 | UI components | ⬜ Not started |
-| 14 | API connection | ⬜ Not started |
+| 12 | Frontend setup + components | ✅ Complete |
+| 13 | Frontend build passes | ✅ Complete |
+| 14 | Full stack integration test | ⬜ Not started |
 | 15 | Render deployment | ⬜ Not started |
 | 16 | Netlify deployment | ⬜ Not started |
 
 ---
 
 ## What Is Working
-- Full backend pipeline runs end-to-end without errors
-- /simulate returns intent, 5 personas, 5 Phase 1 reactions, 12-13 Phase 2 debate messages, 4-field summary
-- /health endpoint responds correctly
-- /steer endpoint wired and ready (untested — requires frontend)
-- All API calls use claude-haiku-4-5-20251001
+- Full backend pipeline runs end-to-end
+- Frontend builds cleanly (1573 modules, no warnings)
+- All 8 frontend files written: main, App, index, api, constants, all 5 components
+- Fake streaming with setTimeout reveal logic implemented
+- Health ping + warming banner on page load
+- Persona cards with stagger animation
+- SimulationFeed auto-scrolls, shows phase headers, typing indicator
+- SteerInput visible during Phase 2
+- SummaryPanel with 4 cards, copy to clipboard, run again
 
 ## What Is Blocked
-- Nothing currently blocked
+- Nothing blocked
 
 ## Next Session
-1. Build frontend: Vite + React + Tailwind already installed in frontend/
-2. Start with App.jsx (health ping + warming banner)
-3. Build InputPanel.jsx with hardcoded mock response to test layout
+1. Run both backend and frontend locally and test full flow in browser
+2. Deploy backend to Render
+3. Deploy frontend to Netlify
