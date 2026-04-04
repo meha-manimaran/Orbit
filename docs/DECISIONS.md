@@ -83,3 +83,27 @@
 **Alternatives considered:** claude-3-5-haiku-20241022 (deprecated, also 404)
 
 **Revisit if:** Never — this is a newer, better model at comparable cost.
+
+---
+
+## 2026-04-03 — Allow manual intent override on top of backend detection
+
+**Decision:** The backend still auto-detects intent by default, but `/simulate` now accepts an optional `intent_override` so the frontend can rerun with a user-selected decision type.
+
+**Reason:** The detected intent should remain the default because it keeps the workflow fast and low-friction. But for a simulation tool, users need a way to correct the classification or intentionally explore a different lens without rewriting their whole prompt.
+
+**Alternatives considered:** Backend detection only, fully manual intent selection before every run
+
+**Revisit if:** Intent detection becomes reliable enough that overrides are rarely needed, or if the product moves toward a more guided prompt builder.
+
+---
+
+## 2026-04-03 — Adopt the split-shell redesign as the primary frontend layout
+
+**Decision:** The frontend now uses a persistent two-column shell with a sidebar for input, intent chips, and personas, while the main area keeps reactions, debate, and summary in one continuous workspace.
+
+**Reason:** The redesign makes the simulation easier to scan and keeps the key controls visible without forcing the user through view swaps. It also matches the provided HTML direction more closely while preserving the existing fake-streaming implementation.
+
+**Alternatives considered:** Keep the original single-column phase-by-phase view, rebuild the app as separate routes or tabs
+
+**Revisit if:** Mobile usage becomes the primary target or the interface needs stronger separation between early-phase reveal and final summary analysis.

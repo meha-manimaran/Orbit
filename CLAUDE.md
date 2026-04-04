@@ -543,10 +543,9 @@ Log a decision entry for:
 
 ## 8. Project Spec Reference
 
-The full product and technical specifications live here:
+The full product and technical specifications currently live here:
 
-- `docs/Orbit_Product_Spec.md` — product overview, personas, simulation phases, dashboard layout
-- `docs/Orbit_Technical_Spec.md` — full technical implementation guide, build order, deployment
+- `prdouct_spec.md` — current combined product + technical setup spec covering personas, simulation phases, implementation guide, build order, and deployment notes
 
 If there is ever a conflict between something in this CLAUDE.md and the technical spec, follow CLAUDE.md. It is the more up-to-date document.
 

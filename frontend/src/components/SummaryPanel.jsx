@@ -1,32 +1,17 @@
 import { useState } from 'react'
-import { Copy, Check, RotateCcw } from 'lucide-react'
+import { Check, Copy, RotateCcw } from 'lucide-react'
 
-function getSentimentAccent(sentiment) {
-  const lower = (sentiment || '').toLowerCase()
-  if (lower.includes('positive') && !lower.includes('negative') && !lower.includes('mixed')) {
-    return '#4CAF82'
-  }
-  if (lower.includes('negative') && !lower.includes('positive')) {
-    return '#E94560'
-  }
-  return '#F0A500'
-}
-
-function Card({ title, content, accentColour, fullWidth }) {
+function SummaryCard({ title, content }) {
   return (
-    <div
-      className={`bg-orbit-surface rounded-xl p-5 border border-orbit-border animate-fade-in-up ${fullWidth ? 'col-span-2' : ''}`}
-      style={{ borderLeft: `3px solid ${accentColour}` }}
-    >
-      <p className="text-orbit-muted text-xs uppercase tracking-widest font-medium mb-3">{title}</p>
-      <p className="text-orbit-text text-sm leading-relaxed">{content}</p>
+    <div className="rounded-[12px] border border-[#E8E2D8] bg-white px-4 py-4">
+      <p className="mb-1.5 text-[10px] font-medium uppercase tracking-[0.08em] text-[#E8A87C]">{title}</p>
+      <p className="text-[12px] leading-6 text-[#444]">{content}</p>
     </div>
   )
 }
 
-export default function SummaryPanel({ summary, onReset }) {
+export default function SummaryPanel({ summary, onReset, isStale }) {
   const [copied, setCopied] = useState(false)
-  const sentimentAccent = getSentimentAccent(summary.overall_sentiment)
 
   const handleCopy = async () => {
     const text = [
@@ -41,65 +26,48 @@ export default function SummaryPanel({ summary, onReset }) {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
-      // Clipboard not available
+      // Clipboard not available.
     }
   }
 
   return (
-    <div className="animate-fade-in-up">
-      <p className="text-orbit-muted text-xs uppercase tracking-widest font-medium mb-4">
-        Simulation Summary
-      </p>
+    <section className="space-y-3">
+      <div className="mb-3 flex items-center gap-3">
+        <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#999]">Summary</p>
+        <div className="h-px flex-1 bg-[#E0DBD3]" />
+      </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        {/* Sentiment spans full width */}
-        <div
-          className="col-span-2 bg-orbit-surface rounded-xl p-5 border animate-fade-in-up"
-          style={{ borderColor: sentimentAccent, borderLeft: `3px solid ${sentimentAccent}` }}
-        >
-          <p className="text-orbit-muted text-xs uppercase tracking-widest font-medium mb-3">
-            Overall Sentiment
-          </p>
-          <p className="text-orbit-text text-sm leading-relaxed">{summary.overall_sentiment}</p>
+      {isStale && (
+        <div className="rounded-[10px] border border-[#E8D6C6] bg-[#F7EFE6] px-3 py-2 text-[11px] leading-5 text-[#7B5B45]">
+          The summary reflects the last full simulation run. Rerun the simulation if you want the summary refreshed after new steering.
         </div>
+      )}
 
-        <Card
-          title="Strongest Support"
-          content={summary.strongest_support}
-          accentColour="#4CAF82"
-        />
-
-        <Card
-          title="Biggest Concern"
-          content={summary.biggest_concern}
-          accentColour="#E94560"
-        />
-
-        <Card
-          title="Explore Next"
-          content={summary.explore_next}
-          accentColour="#6C63FF"
-          fullWidth
-        />
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <SummaryCard title="Overall sentiment" content={summary.overall_sentiment} />
+        <SummaryCard title="Strongest support" content={summary.strongest_support} />
+        <SummaryCard title="Biggest concern" content={summary.biggest_concern} />
+        <SummaryCard title="Explore next" content={summary.explore_next} />
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-2 pt-1">
         <button
-          onClick={onReset}
-          className="flex items-center gap-2 px-4 py-2.5 bg-orbit-surface border border-orbit-border rounded-lg text-orbit-muted text-sm hover:text-orbit-text transition-colors duration-200"
-        >
-          <RotateCcw size={13} />
-          Run Another Simulation
-        </button>
-
-        <button
+          type="button"
           onClick={handleCopy}
-          className="flex items-center gap-2 px-4 py-2.5 bg-orbit-primary text-white rounded-lg text-sm hover:opacity-90 transition-opacity duration-200"
+          className="inline-flex items-center gap-1.5 rounded-[8px] border border-[#DDD8D0] bg-[#F0EDE8] px-3 py-2 text-[11px] font-medium text-[#555] transition-colors duration-150 hover:text-[#1C1C1E]"
         >
-          {copied ? <Check size={13} /> : <Copy size={13} />}
-          {copied ? 'Copied' : 'Copy Summary'}
+          {copied ? <Check size={12} /> : <Copy size={12} />}
+          {copied ? 'Copied' : 'Copy summary'}
+        </button>
+        <button
+          type="button"
+          onClick={onReset}
+          className="inline-flex items-center gap-1.5 rounded-[8px] bg-[#1C1C1E] px-3 py-2 text-[11px] font-medium text-[#F5F0E8] transition-opacity duration-150 hover:opacity-90"
+        >
+          <RotateCcw size={12} />
+          New simulation
         </button>
       </div>
-    </div>
+    </section>
   )
 }

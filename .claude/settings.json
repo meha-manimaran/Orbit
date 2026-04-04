@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/Scripts/python -c ':*)",
+      "Bash(curl -s -X POST http://localhost:8000/simulate -H 'Content-Type: application/json' -d '{\"input\": \"Adding AI search to dashboard.\"}')",
+      "Bash(netstat -ano)",
+      "Bash(tasklist)",
+      "Read(//c/Users/mehac/Orbit/backend/**)",
+      "Bash(xargs -I {} cmd /c \"taskkill /PID {} /F\")",
+      "Bash(venv/Scripts/python -m uvicorn main:app --port 8001 --log-level warning)",
+      "Bash(curl -s http://localhost:8001/health)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(venv/Scripts/python -m uvicorn main:app --port 8000)",
+      "Bash(echo \"launched pid $!\")",
+      "Bash(npm run:*)",
+      "WebFetch(domain:github.com)",
+      "Read(//c/Users/mehac/impeccable/**)",
+      "Read(//c/Users/mehac/.claude/skills/**)",
+      "Skill(claude-api)",
+      "Skill(claude-api:*)"
+    ]
+  }
+}

@@ -1,4 +1,5 @@
 import logging
+from typing import Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,7 @@ from agents.context_personas import Persona
 from agents.core_personas import CORE_PERSONAS
 from crew import run_phase1_reactions
 from debate import run_phase2_debate
-from intent_detector import detect_intent
+from intent_detector import VALID_INTENTS, detect_intent
 from persona_selector import select_context_personas
 from steer import steer_debate
 from summary_generator import generate_summary
@@ -33,6 +34,7 @@ app.add_middleware(
 
 class SimulateRequest(BaseModel):
     input: str
+    intent_override: Optional[str] = None
 
 
 class ConversationEntry(BaseModel):
@@ -59,11 +61,19 @@ def simulate(request: SimulateRequest) -> dict:
     """Run a full simulation: intent → personas → Phase 1 → Phase 2 → summary."""
     logger.info("Simulation started")
 
-    try:
-        intent = detect_intent(request.input)
-    except Exception as exc:
-        logger.error("Intent detection failed: %s", exc)
-        raise HTTPException(status_code=500, detail="Intent detection failed") from exc
+    intent_source = "detected"
+    if request.intent_override is not None:
+        if request.intent_override not in VALID_INTENTS:
+            raise HTTPException(status_code=400, detail="Invalid intent override")
+        intent = request.intent_override
+        intent_source = "manual_override"
+        logger.info("Simulation intent overridden: %s", intent)
+    else:
+        try:
+            intent = detect_intent(request.input)
+        except Exception as exc:
+            logger.error("Intent detection failed: %s", exc)
+            raise HTTPException(status_code=500, detail="Intent detection failed") from exc
 
     try:
         context_personas: list[Persona] = select_context_personas(intent)
@@ -93,6 +103,7 @@ def simulate(request: SimulateRequest) -> dict:
     logger.info("Simulation complete")
     return {
         "intent": intent,
+        "intent_source": intent_source,
         "personas": all_personas,
         "phase1_reactions": phase1_reactions,
         "phase2_debate": phase2_debate,

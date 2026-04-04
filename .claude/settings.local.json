@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(python -m venv venv)",
+      "Bash(venv/Scripts/pip install:*)",
+      "Bash(npm install:*)",
+      "Bash(venv/Scripts/pip show:*)",
+      "Bash(venv/Scripts/pip list:*)",
+      "Bash(venv/Scripts/python -c ':*)",
+      "Bash(venv/Scripts/uvicorn main:app --port 8000)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(venv/Scripts/uvicorn main:app --port 8000 --log-level error)",
+      "Bash(curl -s -X POST http://localhost:8000/simulate -H 'Content-Type: application/json' -d '{\"input\": \"We are considering adding an AI-powered search bar to our SaaS dashboard that suggests relevant filters and surfaces anomalies automatically.\"}')",
+      "Bash(taskkill /F /IM \"python.exe\" /FI \"WINDOWTITLE eq uvicorn*\")"
+    ]
+  }
+}

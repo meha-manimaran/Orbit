@@ -1,7 +1,7 @@
 # Orbit — Project Status
 
 **Last updated:** 2026-04-03
-**Current phase:** Frontend complete — ready for integration test
+**Current phase:** Frontend redesign implemented and verified — ready for deployment
 **Overall status:** In progress
 
 ---
@@ -23,27 +23,32 @@
 | 11 | End-to-end /simulate test | ✅ Complete |
 | 12 | Frontend setup + components | ✅ Complete |
 | 13 | Frontend build passes | ✅ Complete |
-| 14 | Full stack integration test | ⬜ Not started |
-| 15 | Render deployment | ⬜ Not started |
-| 16 | Netlify deployment | ⬜ Not started |
+| 14 | Full stack integration test | ✅ Complete |
+| 15 | Frontend redesign + intent override flow | ✅ Complete |
+| 16 | Render deployment | ⬜ Not started |
+| 17 | Netlify deployment | ⬜ Not started |
 
 ---
 
 ## What Is Working
-- Full backend pipeline runs end-to-end
-- Frontend builds cleanly (1573 modules, no warnings)
-- All 8 frontend files written: main, App, index, api, constants, all 5 components
-- Fake streaming with setTimeout reveal logic implemented
+- Backend imports cleanly and `/health` returns `200 {"status":"ok"}`
+- Real `/simulate` integration run completed successfully with Anthropic: 5 personas, 5 Phase 1 reactions, 12 Phase 2 debate messages, and a valid 4-field summary
+- Real `/steer` integration run completed successfully with 5 continuation messages
+- Backend now accepts an optional `intent_override` on `/simulate` so the UI can rerun with a user-selected decision type
+- Frontend production build passes locally with Vite (1573 modules transformed)
+- Fake streaming with `setTimeout` reveal logic implemented end to end
 - Health ping + warming banner on page load
-- Persona cards with stagger animation
-- SimulationFeed auto-scrolls, shows phase headers, typing indicator
-- SteerInput visible during Phase 2
-- SummaryPanel with 4 cards, copy to clipboard, run again
+- Two-column redesign implemented: persistent sidebar, main content shell, phase pills, and bottom steer bar
+- Intent chips reflect backend detection by default and support manual override reruns
+- Persona cards render as sidebar rows with core vs auto-selected badges
+- SimulationFeed now shows reactions and debate in the same main panel instead of swapping views
+- SummaryPanel matches the new warm-card layout and supports stale-summary messaging after steering
+- `.env.example` files now exist for backend and frontend setup
 
 ## What Is Blocked
-- Nothing blocked
+- Nothing blocked in code; deployment is still pending external Render and Netlify setup
 
 ## Next Session
-1. Run both backend and frontend locally and test full flow in browser
-2. Deploy backend to Render
-3. Deploy frontend to Netlify
+1. Deploy backend to Render and set the production `ANTHROPIC_API_KEY`
+2. Deploy frontend to Netlify and set `VITE_API_URL` to the Render backend URL
+3. Tighten backend CORS from `*` to the final Netlify origin and run browser-level visual QA after deployment

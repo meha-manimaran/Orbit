@@ -1,20 +1,20 @@
 export const PERSONA_COLOURS = {
-  end_user:              '#6C63FF',
+  end_user:              '#4A8FD4',
   skeptic:               '#E94560',
-  devils_advocate:       '#F0A500',
-  power_user:            '#4CAF82',
+  devils_advocate:       '#D97706',
+  power_user:            '#16A34A',
   builder:               '#00BCD4',
   support_rep:           '#FF7043',
-  investor:              '#AB47BC',
+  investor:              '#8B5CF6',
   competitor:            '#EF5350',
-  market_analyst:        '#26A69A',
-  evangelist:            '#66BB6A',
+  market_analyst:        '#0F9D8A',
+  evangelist:            '#2F9E44',
   reluctant_adopter:     '#FFA726',
   regulator:             '#78909C',
-  timing_critic:         '#EC407A',
+  timing_critic:         '#C2410C',
   executive_stakeholder: '#5C6BC0',
   newcomer:              '#8D6E63',
-  user:                  '#6C63FF',
+  user:                  '#1C1C1E',
 }
 
 export const NAME_TO_ID = {
@@ -37,3 +37,14 @@ export const NAME_TO_ID = {
 }
 
 export const CORE_PERSONA_IDS = new Set(['end_user', 'skeptic', 'devils_advocate'])
+
+export const INTENT_OPTIONS = [
+  { id: 'feature_decision', label: 'Feature', shortLabel: 'Feature decision' },
+  { id: 'strategic_decision', label: 'Strategy', shortLabel: 'Strategic decision' },
+  { id: 'launch_announcement', label: 'Launch', shortLabel: 'Launch announcement' },
+  { id: 'timing_strategy', label: 'Timing', shortLabel: 'Timing strategy' },
+]
+
+export const INTENT_LABELS = Object.fromEntries(
+  INTENT_OPTIONS.map((option) => [option.id, option.shortLabel]),
+)

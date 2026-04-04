@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ArrowRight } from 'lucide-react'
 
 export default function SteerInput({ onSteer, isVisible, disabled }) {
   const [message, setMessage] = useState('')
@@ -12,30 +11,31 @@ export default function SteerInput({ onSteer, isVisible, disabled }) {
     setMessage('')
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault()
       handleSubmit()
     }
   }
 
   return (
-    <div className="flex items-center gap-2 bg-orbit-surface border border-orbit-border rounded-xl px-4 py-3 transition-opacity duration-200">
+    <div className="flex flex-col gap-2 border-t border-[#EAE6DF] bg-[#F5F2EC] px-5 py-4 md:flex-row md:items-center md:px-7">
       <input
         type="text"
         value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        onChange={(event) => setMessage(event.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Steer the conversation..."
+        placeholder="Steer the debate - e.g. 'what if we made it opt-in?'"
         disabled={disabled}
-        className="flex-1 bg-transparent text-orbit-text text-sm placeholder:text-orbit-muted focus:outline-none disabled:opacity-50 min-w-0"
+        className="min-w-0 flex-1 rounded-[8px] border border-[#DDD8D0] bg-white px-3.5 py-2.5 text-[12px] text-[#1C1C1E] outline-none transition-colors duration-150 placeholder:text-[#9A938A] focus:border-[#E8A87C] disabled:cursor-not-allowed disabled:opacity-50"
       />
       <button
+        type="button"
         onClick={handleSubmit}
         disabled={disabled || !message.trim()}
-        className="w-8 h-8 rounded-lg bg-orbit-primary flex items-center justify-center flex-shrink-0 disabled:opacity-40 transition-opacity duration-200 hover:opacity-90"
+        className="rounded-[8px] bg-[#1C1C1E] px-4 py-2.5 text-[12px] font-medium text-[#F5F0E8] transition-opacity duration-150 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <ArrowRight size={14} className="text-white" />
+        Send
       </button>
     </div>
   )

@@ -23,11 +23,11 @@ export default function App() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-orbit-secondary">
+    <div className="min-h-screen bg-[#EFE9DF]">
       {showBanner && !backendReady && (
-        <div className="fixed top-0 left-0 right-0 z-50 bg-orbit-surface border-b border-orbit-border px-6 py-3 flex items-center gap-3">
-          <div className="w-4 h-4 rounded-full border-2 border-orbit-primary border-t-transparent animate-spin flex-shrink-0" />
-          <span className="text-orbit-muted text-sm">Warming up the simulation engine...</span>
+        <div className="fixed left-0 right-0 top-0 z-50 flex items-center gap-3 border-b border-[#D9D0C5] bg-[#F7F2EB] px-6 py-3">
+          <div className="h-4 w-4 flex-shrink-0 animate-spin rounded-full border-2 border-[#E8A87C] border-t-transparent" />
+          <span className="text-sm text-[#6D655D]">Warming up the simulation engine...</span>
         </div>
       )}
       <div className={showBanner && !backendReady ? 'pt-11' : ''}>

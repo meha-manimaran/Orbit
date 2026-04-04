@@ -25,10 +25,19 @@
 - `frontend/src/components/SteerInput.jsx` — inline input for steering Phase 2
 - `frontend/src/components/SummaryPanel.jsx` — 2x2 summary grid with sentiment colouring, copy button
 - `frontend/postcss.config.js` and `frontend/src/index.css` — Tailwind + animation keyframes
+- `backend/.env.example` and `frontend/.env.example` for local and deployment setup
+- `/simulate` now accepts an optional `intent_override` so the frontend can rerun with a user-selected decision type
+- Redesigned Orbit UI shell based on the provided HTML mockup: persistent sidebar, phase pills, reaction grid, live debate feed, and bottom steer bar
 
 ### Fixed
 - CrewAI LLM model string must use `anthropic/` prefix for LiteLLM routing
 - Model updated from `claude-haiku-20240307` → `claude-haiku-4-5-20251001`
 - CSS @import must precede @tailwind directives
+- `CLAUDE.md` spec reference now points to the actual repo spec file (`prdouct_spec.md`)
+- `prdouct_spec.md` now reflects the shipped split-shell UI and `/simulate` intent override contract
+
+### Changed
+- Verified the local integration path end to end: backend import, `/health`, real `/simulate`, real `/steer`, and frontend production build
+- Frontend flow now prioritises the redesign layout: reactions, debate, and summary live in one shell instead of replacing each other as separate views
 
 ---

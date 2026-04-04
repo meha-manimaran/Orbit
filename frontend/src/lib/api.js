@@ -1,10 +1,13 @@
 const BASE_URL = import.meta.env.VITE_API_URL
 
-export async function runSimulation(input) {
+export async function runSimulation(input, intentOverride = null) {
   const res = await fetch(`${BASE_URL}/simulate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ input }),
+    body: JSON.stringify({
+      input,
+      intent_override: intentOverride,
+    }),
   })
   if (!res.ok) throw new Error(`Simulation failed: ${res.status}`)
   return res.json()
