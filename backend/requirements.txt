@@ -1,7 +1,7 @@
-fastapi
-uvicorn
+fastapi>=0.100.0
+uvicorn>=0.20.0
 crewai==0.80.0
-anthropic
-litellm
-python-dotenv
-pydantic
+anthropic>=0.88.0
+litellm>=1.80.0
+python-dotenv>=1.0.0
+pydantic>=2.0.0
