@@ -1,7 +1,7 @@
 # Orbit — Project Status
 
 **Last updated:** 2026-04-03
-**Current phase:** Frontend redesign implemented and verified — ready for deployment
+**Current phase:** Mocked end-to-end tests added — ready for deployment
 **Overall status:** In progress
 
 ---
@@ -25,8 +25,9 @@
 | 13 | Frontend build passes | ✅ Complete |
 | 14 | Full stack integration test | ✅ Complete |
 | 15 | Frontend redesign + intent override flow | ✅ Complete |
-| 16 | Render deployment | ⬜ Not started |
-| 17 | Netlify deployment | ⬜ Not started |
+| 16 | Mocked backend + frontend automated tests | ✅ Complete |
+| 17 | Render deployment | ⬜ Not started |
+| 18 | Netlify deployment | ⬜ Not started |
 
 ---
 
@@ -36,6 +37,8 @@
 - Real `/steer` integration run completed successfully with 5 continuation messages
 - Backend now accepts an optional `intent_override` on `/simulate` so the UI can rerun with a user-selected decision type
 - Frontend production build passes locally with Vite (1573 modules transformed)
+- Backend mocked integration tests pass via `unittest`
+- Frontend mocked end-to-end tests pass via Vitest + jsdom
 - Fake streaming with `setTimeout` reveal logic implemented end to end
 - Health ping + warming banner on page load
 - Two-column redesign implemented: persistent sidebar, main content shell, phase pills, and bottom steer bar

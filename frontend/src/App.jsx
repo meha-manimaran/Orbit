@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import IndexPage from './pages/index.jsx'
+import { checkBackendHealth } from './lib/api.js'
 
 export default function App() {
   const [backendReady, setBackendReady] = useState(false)
@@ -8,7 +9,7 @@ export default function App() {
   useEffect(() => {
     const bannerTimer = setTimeout(() => setShowBanner(true), 2000)
 
-    fetch(`${import.meta.env.VITE_API_URL}/health`)
+    checkBackendHealth()
       .then(() => {
         clearTimeout(bannerTimer)
         setBackendReady(true)

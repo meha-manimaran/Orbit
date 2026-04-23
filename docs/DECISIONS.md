@@ -107,3 +107,15 @@
 **Alternatives considered:** Keep the original single-column phase-by-phase view, rebuild the app as separate routes or tabs
 
 **Revisit if:** Mobile usage becomes the primary target or the interface needs stronger separation between early-phase reveal and final summary analysis.
+
+---
+
+## 2026-04-03 — Use mocked automated tests for full-stack coverage
+
+**Decision:** The automated test suite uses mocked backend and frontend flows instead of real Anthropic API calls.
+
+**Reason:** The product depends on paid, networked LLM calls that are too slow, costly, and nondeterministic for repeatable automated tests. Mocked tests let us validate the application contract, UI state flow, intent override behavior, and steering behavior consistently in local and CI-style runs.
+
+**Alternatives considered:** Real API integration tests only, manual QA only
+
+**Revisit if:** The project adds a staging environment with reliable fixtures or a backend abstraction layer that makes deterministic integration testing easier.

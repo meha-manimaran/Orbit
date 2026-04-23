@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ChevronDown, ChevronRight } from 'lucide-react'
 import { CORE_PERSONA_IDS, NAME_TO_ID, PERSONA_COLOURS } from '../lib/constants.js'
 
 function getPersonaId(persona, personasById) {
@@ -71,10 +72,23 @@ function TypingPlaceholder() {
 
 export default function SimulationFeed({ phase1Reactions, phase2Debate, isTyping, phase, personas }) {
   const bottomRef = useRef(null)
+  const [expandedReactions, setExpandedReactions] = useState({})
+  const [debateExpanded, setDebateExpanded] = useState(false)
   const personasByName = useMemo(
     () => new Map(personas.map((persona) => [persona.name, persona])),
     [personas],
   )
+
+  useEffect(() => {
+    setExpandedReactions((current) => {
+      const next = { ...current }
+      phase1Reactions.forEach((reaction, index) => {
+        const key = `${reaction.persona}-${index}`
+        if (!(key in next)) next[key] = false
+      })
+      return next
+    })
+  }, [phase1Reactions])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
@@ -87,29 +101,46 @@ export default function SimulationFeed({ phase1Reactions, phase2Debate, isTyping
       <section>
         <PhaseHeader>Phase 1 - independent reactions</PhaseHeader>
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-          {phase1Reactions.map((reaction) => {
+          {phase1Reactions.map((reaction, index) => {
             const personaId = getPersonaId(reaction, personasByName)
             const sentiment = getReactionSentiment(reaction.message)
             const roleLabel = personaId && CORE_PERSONA_IDS.has(personaId) ? 'core persona' : 'auto-selected'
+            const reactionKey = `${reaction.persona}-${reaction.message.slice(0, 24)}`
+            const expansionKey = `${reaction.persona}-${index}`
+            const isExpanded = expandedReactions[expansionKey] ?? false
 
             return (
-              <article key={`${reaction.persona}-${reaction.message.slice(0, 24)}`} className="rounded-[12px] border border-[#E8E2D8] bg-white px-4 py-4 animate-fade-in-up">
-                <div className="mb-3 flex items-center gap-2">
-                  <div
-                    className="flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold text-white"
-                    style={{ backgroundColor: PERSONA_COLOURS[personaId] || '#A8A8B3' }}
-                  >
-                    {getAvatarLabel(reaction.persona)}
+              <article key={reactionKey} className="rounded-[12px] border border-[#E8E2D8] bg-white animate-fade-in-up">
+                <button
+                  type="button"
+                  onClick={() => setExpandedReactions((current) => ({ ...current, [expansionKey]: !isExpanded }))}
+                  className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left"
+                >
+                  <div className="flex min-w-0 items-center gap-2">
+                    <div
+                      className="flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-bold text-white"
+                      style={{ backgroundColor: PERSONA_COLOURS[personaId] || '#A8A8B3' }}
+                    >
+                      {getAvatarLabel(reaction.persona)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-[11px] font-medium text-[#1C1C1E]">{reaction.persona.replace(/^The /, '')}</p>
+                      <p className="truncate text-[10px] text-[#AAA]">{roleLabel}</p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <p className="truncate text-[11px] font-medium text-[#1C1C1E]">{reaction.persona.replace(/^The /, '')}</p>
-                    <p className="truncate text-[10px] text-[#AAA]">{roleLabel}</p>
+                  {isExpanded
+                    ? <ChevronDown size={14} className="flex-shrink-0 text-[#9E968B]" />
+                    : <ChevronRight size={14} className="flex-shrink-0 text-[#9E968B]" />
+                  }
+                </button>
+                {isExpanded && (
+                  <div className="px-4 pb-4">
+                    <p className="text-[12px] leading-6 text-[#555]">{reaction.message}</p>
+                    <span className={`mt-3 inline-block rounded-full px-2 py-1 text-[10px] ${sentiment.className}`}>
+                      {sentiment.label}
+                    </span>
                   </div>
-                </div>
-                <p className="text-[12px] leading-6 text-[#555]">{reaction.message}</p>
-                <span className={`mt-3 inline-block rounded-full px-2 py-1 text-[10px] ${sentiment.className}`}>
-                  {sentiment.label}
-                </span>
+                )}
               </article>
             )
           })}
@@ -119,36 +150,49 @@ export default function SimulationFeed({ phase1Reactions, phase2Debate, isTyping
 
       {(phase2Debate.length > 0 || isTyping || phase === 'phase2' || phase === 'summary') && (
         <section>
-          <PhaseHeader>Phase 2 - live debate</PhaseHeader>
-          <div className="flex flex-col gap-3">
-            {phase2Debate.map((message, index) => {
-              const personaId = message.isUser ? 'user' : getPersonaId(message, personasByName)
-              const bubbleClasses = message.isUser
-                ? 'border-[#D8D1C6] bg-[#F3EFE8] text-[#2C2B29]'
-                : 'border-[#EAE6DF] bg-white text-[#444]'
+          <button
+            type="button"
+            onClick={() => setDebateExpanded((current) => !current)}
+            className="mb-3 flex w-full items-center gap-3 text-left"
+          >
+            <p className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#999]">Phase 2 - live debate</p>
+            <div className="h-px flex-1 bg-[#E0DBD3]" />
+            {debateExpanded
+              ? <ChevronDown size={14} className="flex-shrink-0 text-[#9E968B]" />
+              : <ChevronRight size={14} className="flex-shrink-0 text-[#9E968B]" />
+            }
+          </button>
+          {debateExpanded && (
+            <div className="flex flex-col gap-3">
+              {phase2Debate.map((message, index) => {
+                const personaId = message.isUser ? 'user' : getPersonaId(message, personasByName)
+                const bubbleClasses = message.isUser
+                  ? 'border-[#D8D1C6] bg-[#F3EFE8] text-[#2C2B29]'
+                  : 'border-[#EAE6DF] bg-white text-[#444]'
 
-              return (
-                <div key={`${message.persona}-${index}`} className="flex gap-3 animate-fade-in">
-                  <div
-                    className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
-                    style={{ backgroundColor: PERSONA_COLOURS[personaId] || '#A8A8B3' }}
-                  >
-                    {getAvatarLabel(message.persona)}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-1 flex items-baseline gap-2">
-                      <span className="text-[12px] font-medium text-[#1C1C1E]">{message.persona.replace(/^The /, '')}</span>
-                      <span className="text-[10px] text-[#C5C0B8]">just now</span>
+                return (
+                  <div key={`${message.persona}-${index}`} className="flex gap-3 animate-fade-in">
+                    <div
+                      className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold text-white"
+                      style={{ backgroundColor: PERSONA_COLOURS[personaId] || '#A8A8B3' }}
+                    >
+                      {getAvatarLabel(message.persona)}
                     </div>
-                    <div className={`rounded-[12px] border px-3.5 py-2.5 text-[13px] leading-7 ${bubbleClasses}`}>
-                      {message.message}
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex items-baseline gap-2">
+                        <span className="text-[12px] font-medium text-[#1C1C1E]">{message.persona.replace(/^The /, '')}</span>
+                        <span className="text-[10px] text-[#C5C0B8]">just now</span>
+                      </div>
+                      <div className={`rounded-[12px] border px-3.5 py-2.5 text-[13px] leading-7 ${bubbleClasses}`}>
+                        {message.message}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )
-            })}
-            {isTyping && phase !== 'phase1' && <TypingPlaceholder />}
-          </div>
+                )
+              })}
+              {isTyping && phase !== 'phase1' && <TypingPlaceholder />}
+            </div>
+          )}
         </section>
       )}
       <div ref={bottomRef} />

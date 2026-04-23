@@ -28,6 +28,7 @@
 - `backend/.env.example` and `frontend/.env.example` for local and deployment setup
 - `/simulate` now accepts an optional `intent_override` so the frontend can rerun with a user-selected decision type
 - Redesigned Orbit UI shell based on the provided HTML mockup: persistent sidebar, phase pills, reaction grid, live debate feed, and bottom steer bar
+- Mocked automated tests: backend `unittest` coverage for `/simulate` and `/steer`, plus frontend Vitest coverage for the full run/override/steer flow
 
 ### Fixed
 - CrewAI LLM model string must use `anthropic/` prefix for LiteLLM routing
@@ -39,5 +40,6 @@
 ### Changed
 - Verified the local integration path end to end: backend import, `/health`, real `/simulate`, real `/steer`, and frontend production build
 - Frontend flow now prioritises the redesign layout: reactions, debate, and summary live in one shell instead of replacing each other as separate views
+- README now documents how to run the backend and frontend test suites locally
 
 ---
