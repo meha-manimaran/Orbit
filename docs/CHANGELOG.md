@@ -4,7 +4,6 @@
 
 ### Added
 - Initial project structure — backend (FastAPI + CrewAI + Anthropic) and frontend (React + Vite + Tailwind)
-- CLAUDE.md operating manual with architecture, style guide, constraints, and automation rules
 - docs/ folder with CHANGELOG, STATUS, and DECISIONS tracking files
 - `agents/core_personas.py` — 3 always-present personas (End User, Skeptic, Devil's Advocate)
 - `agents/context_personas.py` — 12 context-specific personas across all 4 intent categories
@@ -34,8 +33,6 @@
 - CrewAI LLM model string must use `anthropic/` prefix for LiteLLM routing
 - Model updated from `claude-haiku-20240307` → `claude-haiku-4-5-20251001`
 - CSS @import must precede @tailwind directives
-- `CLAUDE.md` spec reference now points to the actual repo spec file (`prdouct_spec.md`)
-- `prdouct_spec.md` now reflects the shipped split-shell UI and `/simulate` intent override contract
 
 ### Changed
 - Verified the local integration path end to end: backend import, `/health`, real `/simulate`, real `/steer`, and frontend production build
